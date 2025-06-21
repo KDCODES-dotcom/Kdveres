@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KDVERSE | Mini Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #111;
+      color: #0ff;
+      text-align: center;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    #playArea {
+      display: none;
+    }
+
+    a.button {
+      text-decoration: none;
+      background: #0ff;
+      color: #111;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    canvas {
+      background: #000;
+      border: 2px solid #0ff;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="homeScreen">
+    <h1>🌍 Welcome to KDVERSE</h1>
+    <p>Select your color and enter the world.</p>
+
+    <label>Choose your color: </label>
+    <input type="color" id="avatarColor" value="#00f"><br><br>
+
+    <a class="button" onclick="startGame()">▶️ Play Game</a>
+  </div>
+
+  <div class="container" id="playArea">
+    <h2>🎮 Game Mode: Move with Arrow Keys</h2>
+    <canvas id="gameCanvas" width="500" height="400"></canvas>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let player = {
+      x: 50,
+      y: 50,
+      size: 30,
+      color: "#00f",
+      speed: 4,
+    };
+
+    function startGame() {
+      // Set color
+      const chosenColor = document.getElementById("avatarColor").value;
+      player.color = chosenColor;
+
+      // Switch screen
+      document.getElementById("homeScreen").style.display = "none";
+      document.getElementById("playArea").style.display = "block";
+
+      // Start game loop
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "ArrowUp") player.y -= player.speed;
+      if (e.key === "ArrowDown") player.y += player.speed;
+      if (e.key === "ArrowLeft") player.x -= player.speed;
+      if (e.key === "ArrowRight") player.x += player.speed;
+    });
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw player
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.size, player.size);
+
+      requestAnimationFrame(gameLoop);
+    }
+  </script>
+</body>
+</html>
