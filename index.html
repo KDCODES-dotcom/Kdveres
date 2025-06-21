@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KDVERSE | Mini Game</title>
+  <title>KDVERSE | Touch Game</title>
   <style>
     body {
       margin: 0;
@@ -36,6 +36,24 @@
       border: 2px solid #0ff;
       margin-top: 20px;
     }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .controls button {
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
@@ -50,8 +68,15 @@
   </div>
 
   <div class="container" id="playArea">
-    <h2>🎮 Game Mode: Move with Arrow Keys</h2>
+    <h2>🎮 Use arrows or touch buttons</h2>
     <canvas id="gameCanvas" width="500" height="400"></canvas>
+
+    <div class="controls">
+      <button onclick="move('up')">⬆️</button>
+      <button onclick="move('left')">⬅️</button>
+      <button onclick="move('down')">⬇️</button>
+      <button onclick="move('right')">➡️</button>
+    </div>
   </div>
 
   <script>
@@ -67,15 +92,9 @@
     };
 
     function startGame() {
-      // Set color
-      const chosenColor = document.getElementById("avatarColor").value;
-      player.color = chosenColor;
-
-      // Switch screen
+      player.color = document.getElementById("avatarColor").value;
       document.getElementById("homeScreen").style.display = "none";
       document.getElementById("playArea").style.display = "block";
-
-      // Start game loop
       requestAnimationFrame(gameLoop);
     }
 
@@ -86,13 +105,17 @@
       if (e.key === "ArrowRight") player.x += player.speed;
     });
 
+    function move(direction) {
+      if (direction === "up") player.y -= player.speed;
+      if (direction === "down") player.y += player.speed;
+      if (direction === "left") player.x -= player.speed;
+      if (direction === "right") player.x += player.speed;
+    }
+
     function gameLoop() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw player
       ctx.fillStyle = player.color;
       ctx.fillRect(player.x, player.y, player.size, player.size);
-
       requestAnimationFrame(gameLoop);
     }
   </script>
